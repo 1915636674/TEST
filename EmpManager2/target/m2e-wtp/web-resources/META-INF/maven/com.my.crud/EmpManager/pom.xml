@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- 当前工程坐标 -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.my.crud</groupId>
+  <artifactId>EmpManager</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <!-- 当前工程引入的jar包的依赖信息 -->
+  <!-- spring和springmvc依赖jar包的信息 -->
+  <dependencies>
+  <!-- spring-webmvc模块 -->
+		<dependency>
+		 <groupId>org.springframework</groupId>
+		 <artifactId>spring-webmvc</artifactId>
+		  <version>4.3.7.RELEASE</version>
+		</dependency>
+		<!-- spring-jdbc模块 -->
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-jdbc</artifactId>
+		  <version>4.3.7.RELEASE</version>
+		</dependency>
+		<!-- spring aop模块 -->
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-aspects</artifactId>
+		  <version>4.3.7.RELEASE</version>
+		</dependency>
+		<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		 <artifactId>jackson-databind</artifactId>
+		  <version>2.8.8</version>
+		</dependency>
+		
+		<!-- mybatis的依赖jar包信息 -->
+		<!-- mybatis依赖 -->
+		<dependency>
+		  <groupId>org.mybatis</groupId>
+		  <artifactId>mybatis</artifactId>
+		  <version>3.4.2</version>
+		</dependency>
+		<!-- mybatis整合spring的适配包 -->
+		<dependency>
+		  <groupId>org.mybatis</groupId>
+		  <artifactId>mybatis-spring</artifactId>
+		  <version>1.3.1</version>
+		</dependency>
+		<!-- mybatis分页插件pagehelper的依赖信息 -->
+		<dependency>
+		<groupId>com.github.pagehelper</groupId>
+		<artifactId>pagehelper</artifactId>
+		<version>5.0.0</version>
+		</dependency>
+		
+		<!-- 操作数据库所需jar包的依赖信息 -->
+		<!-- c3p0数据库连接池 -->
+		<dependency>
+		  <groupId>c3p0</groupId>
+		  <artifactId>c3p0</artifactId>
+		  <version>0.9.1</version>
+		</dependency>
+		<!-- mysql驱动 -->
+		<dependency>
+		  <groupId>mysql</groupId>
+		  <artifactId>mysql-connector-java</artifactId>
+		  <version>5.1.41</version>
+		</dependency>
+		<!-- javaweb所需jar包的依赖信息 -->
+		<!-- jstl -->
+		<dependency>
+		  <groupId>jstl</groupId>
+		  <artifactId>jstl</artifactId>
+		  <version>1.2</version>
+		</dependency>
+		<!-- servlet-api -->
+		<dependency>
+		  <groupId>javax.servlet</groupId>
+		  <artifactId>javax.servlet-api</artifactId>
+		  <version>3.0.1</version>
+		  <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jsp-api</artifactId>
+		    <version>2.0</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- junit -->
+		<dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <version>4.12</version>
+		</dependency>
+		
+  
+  </dependencies>
+</project>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 当前sql映射文件绑定com.my.dao包中的EmployeeMapper -->
+<mapper namespace="com.my.dao.EmployeeMapper">
+
+<resultMap type="com.my.entitis.Employee" id="empAndDept">
+	<!-- employee表中直接列的映射规则 -->
+	<id column="emp_id" property="empId"/>
+	<result column="emp_name" property="empName"/>
+	<result column="gender" property="gender"/>
+	<result column="email" property="email"/>
+	<result column="d_id" property="dId"/>
+	<!-- employee表关联的department表的列的映射规则(将departm表中的列保存到employee对象关联的department对象属性的映射规则) -->
+	<association property="department" javaType="com.my.entitis.Department">
+	<id column="dept_id" property="deptId"/>
+	<result column="dept_name" property="deptName"/>
+	</association>
+</resultMap>
+<!-- public List<Employee> getAllEmp(); -->
+<select id="getAllEmp" resultMap="empAndDept">
+<!-- 能够查到有所属部门以及没有所属部门的员工 -->
+select e.emp_id,e.emp_name,e.gender,e.email,e.d_id,d.dept_id,d.dept_name 
+from employee e left join department d on e.d_id = d.dept_id
+</select>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 当前sql映射文件绑定com.my.dao包中的EmployeeMapper -->
+<mapper namespace="com.my.dao.EmployeeMapper">
+
+<resultMap type="com.my.entitis.Employee" id="empAndDept">
+	<!-- employee表中直接列的映射规则 -->
+	<id column="emp_id" property="empId"/>
+	<result column="emp_name" property="empName"/>
+	<result column="gender" property="gender"/>
+	<result column="email" property="email"/>
+	<result column="d_id" property="dId"/>
+	<!-- employee表关联的department表的列的映射规则(将departm表中的列保存到employee对象关联的department对象属性的映射规则) -->
+	<association property="department" javaType="com.my.entitis.Department">
+	<id column="dept_id" property="deptId"/>
+	<result column="dept_name" property="deptName"/>
+	</association>
+</resultMap>
+<!-- public List<Employee> getAllEmp(); -->
+<select id="getAllEmp" resultMap="empAndDept">
+<!-- 能够查到有所属部门以及没有所属部门的员工 -->
+select e.emp_id,e.emp_name,e.gender,e.email,e.d_id,d.dept_id,d.dept_name 
+from employee e left join department d on e.d_id = d.dept_id
+</select>
+<insert id="addEmp">
+insert into employee
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<if test="empId!=null">emp_id,</if>
+<if test="empName!=null">emp_name,</if>
+<if test="gender!=null">gender,</if>
+<if test="email!=null">email,</if>
+<if test="dId!=null">d_id,</if>
+</trim>
+<trim prefix="values(" suffix=")" suffixOverrides=",">
+<if test="empId!=null">#{empId},</if>
+<if test="empName!=null">#{empName},</if>
+<if test="gender!=null">#{gender},</if>
+<if test="email!=null">#{email},</if>
+<if test="dId!=null">#{dId},</if>
+</trim>
+</insert>
+<select id="getEmpCount" resultType="java.lang.Integer">
+select count(*) from employee where emp_name = #{empName}
+</select>
+<select id="getEmpById" resultType="com.my.entitis.Employee">
+select emp_id,emp_name,gender,email,d_id
+from employee where emp_id=#{id}
+</select>
+<update id="editEmpById">
+update employee set
+<trim suffixOverrides=",">
+<if test="email!=null">email=#{email},</if>
+<if test="gender!=null">gender=#{gender},</if>
+<if test="dId!=null">d_id=#{dId},</if>
+</trim>
+where emp_id = #{empId}
+</update>
+<delete id="delEmpById">
+delete from employee where emp_id=#{id}
+</delete>
+<delete id="delEmps">
+delete from employee where emp_id in
+<foreach collection="list" item="id" open="(" close=")" separator=",">#{id}</foreach>
+</delete>
+</mapper>

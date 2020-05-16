@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration SYSTEM "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+   	
+<settings>
+	<!-- 开启驼峰命名映射规则 -->
+	<setting name="mapUnderscoreToCamelCase" value="true"/>
+	<!-- null值的处理 -->
+	<setting name="jdbcTypeForNull" value="NULL"/>
+</settings>
+<!-- 给java类型起别名 -->
+<typeAliases>
+<package name="com.my.entitis"/>
+</typeAliases>
+<!-- 注册插件 -->
+<plugins>
+<plugin interceptor="com.github.pagehelper.PageInterceptor">
+<property name="reasonable" value="true"/>
+</plugin>
+</plugins>
+</configuration>

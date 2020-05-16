@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<!-- 指定spring的ioc容器自动扫描的包 -->
+<context:component-scan base-package="com.my">
+<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+</context:component-scan>
+<!-- 引入数据库属性文件并配置数据源 -->
+<context:property-placeholder location="classpath:db.properties"/>
+<bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+<property name="driverClass" value="${jdbc.driverclass}"></property>
+<property name="jdbcUrl" value="${jdbc.url}"></property>
+<property name="user" value="${jdbc.user}"></property>
+<property name="password" value="${jdbc.pwd}"></property>
+</bean>
+<!-- spring的声明式事务 -->
+<!-- 配置事务管理器 -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<property name="dataSource" ref="ds"/>
+</bean>
+<!-- 配置事务属性 -->
+<tx:advice id="txadvice" transaction-manager="transactionManager">
+<tx:attributes>
+<!-- 以get和load开始的查询方法都设置为只读事务 -->
+<tx:method name="get*" read-only="true"/>
+<tx:method name="load*" read-only="true"/>
+<!-- 其他事务都使用默认的事务属性 -->
+<tx:method name="*"/>
+</tx:attributes>
+</tx:advice>
+<!-- 进行事务的aop配置(配置切入点并将切入点和事务切面绑定) -->
+<aop:config>
+<!-- 指定切入点表达式 -->
+<aop:pointcut expression="execution(* com.my.service.*.*(..))" id="mycut"/>
+<!-- 将事务切面和切入点进项绑定 -->
+<aop:advisor advice-ref="txadvice" pointcut-ref="mycut"/>
+</aop:config>
+<!-- 整合mybatis -->
+<!-- 配置sqlsessionFactory -->
+<bean id="sqlsessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+<property name="dataSource" ref="ds"/>
+<property name="configLocation" value="classpath:mybatis-cfg.xml"/>
+<property name="mapperLocations" value="classpath:mappers/*"/>
+</bean>
+<!-- 配置MapperScannerConfigurer对象，来指定所有mapper接口所在的包，spring就会自动创建mybatis为mapper接口提供的实现类的bean对象 -->
+<bean id="" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<property name="basePackage" value="com.my.dao"/>
+</bean>
+</beans>
